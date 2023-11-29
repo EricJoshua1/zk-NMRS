@@ -17,6 +17,7 @@ import Root from "./routes/Root";
 import Login from "./routes/Login";
 import { routeList } from "./routes/routeList";
 import Main from "./routes/Main";
+import ReporterList from "./routes/ReporterList";
 
 const theme = createTheme({
   primaryColor: "blue",
@@ -29,7 +30,9 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path={routeList.root} element={<Root />}>
       <Route path={routeList.login} element={<Login />} />
-      <Route path={routeList.main} element={<Main />} />
+      <Route path={routeList.main} element={<Main />}>
+        <Route path={routeList.reporterList} element={<ReporterList />} />
+      </Route>
       {/* 
       <Route path={routeList.appShell} element={<MyAppShell />}>
         <Route path={routeList.map} element={<MapView />} />
@@ -44,7 +47,11 @@ const router = createBrowserRouter(
 
 export default function App() {
   return (
-    <MantineProvider theme={theme} defaultColorScheme="dark">
+    <MantineProvider
+      theme={theme}
+      defaultColorScheme="dark"
+      forceColorScheme="dark"
+    >
       <Notifications />
       <RouterProvider router={router} />
     </MantineProvider>

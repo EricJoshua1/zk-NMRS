@@ -20,7 +20,7 @@ export default function VerifyUser({}) {
       setActive(3);
       setLoading(true);
       setTimeout(() => {
-        if (verificationFailed) {
+        if (!verificationFailed) {
           console.log("//?");
           navigate("/" + routeList.main, { replace: true });
         } else {

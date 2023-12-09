@@ -15,7 +15,7 @@ export default function Main() {
 
   const tabs = [
     {
-      label: "Home",
+      label: "Reporter's Page",
       role: ["reporter"],
       value: "myList",
     },
@@ -30,7 +30,7 @@ export default function Main() {
       value: "listAll",
     },
     {
-      label: "Accident Book",
+      label: "NMR Book",
       role: ["reporter", "manager", "supervisor"],
       value: "accidentBook",
     },

@@ -28,7 +28,7 @@
   resolved "https://registry.npmjs.org/@babel/compat-data/-/compat-data-7.23.3.tgz"
   integrity sha512-BmR4bWbDIoFJmJ9z2cZ8Gmm2MXgEDgjdWgpKmKWUt54UGFJdlj31ECtbaDvCG/qVdG3AQ1SfpZEs01lUFbzLOQ==
 
-"@babel/core@^7.23.3":
+"@babel/core@^7.0.0", "@babel/core@^7.0.0-0", "@babel/core@^7.23.3":
   version "7.23.3"
   resolved "https://registry.npmjs.org/@babel/core/-/core-7.23.3.tgz"
   integrity sha512-Jg+msLuNuCJDyBvFv5+OKOUjWMZgd85bKjbICd3zWrKAo+bJ49HJufi7CQE0q0uR8NGyO6xkCACScNqyjHSZew==
@@ -220,11 +220,6 @@
     "@babel/helper-validator-identifier" "^7.22.20"
     to-fast-properties "^2.0.0"
 
-"@esbuild/darwin-arm64@0.19.5":
-  version "0.19.5"
-  resolved "https://registry.npmjs.org/@esbuild/darwin-arm64/-/darwin-arm64-0.19.5.tgz"
-  integrity sha512-mvXGcKqqIqyKoxq26qEDPHJuBYUA5KizJncKOAf9eJQez+L9O+KfvNFu6nl7SCZ/gFb2QPaRqqmG0doSWlgkqw==
-
 "@eslint-community/eslint-utils@^4.2.0":
   version "4.4.0"
   resolved "https://registry.npmjs.org/@eslint-community/eslint-utils/-/eslint-utils-4.4.0.tgz"
@@ -349,7 +344,7 @@
   resolved "https://registry.npmjs.org/@mantine/carousel/-/carousel-7.2.2.tgz"
   integrity sha512-u59Fwn2RiMRmKe9eRe2tnlVInGe/nJGW7U1sZ7aZiHM6A5U/m8VBii0obOhl8bGcxNyBgNQYfDW5vZfOAl+2zg==
 
-"@mantine/core@^7.2.2":
+"@mantine/core@^7.2.2", "@mantine/core@7.2.2":
   version "7.2.2"
   resolved "https://registry.npmjs.org/@mantine/core/-/core-7.2.2.tgz"
   integrity sha512-cVGmLjYyKIzjn0LRwamj71O4HT43qCxPGAzMZqkMYGOako7xwBLYQNe7HjL/J0FXJDyfX8OdMylVhgsePWYbng==
@@ -383,7 +378,7 @@
     fast-deep-equal "^3.1.3"
     klona "^2.0.5"
 
-"@mantine/hooks@^7.2.2":
+"@mantine/hooks@^7.2.2", "@mantine/hooks@7.2.2":
   version "7.2.2"
   resolved "https://registry.npmjs.org/@mantine/hooks/-/hooks-7.2.2.tgz"
   integrity sha512-7CFSVP2aQHrBwLLAVf0q5dgj+6QTZmhLTNcuc3pE1du+HLFUdyVS6vvQC6kieZXxOd6UzwFGBlN4G+aDx95XeA==
@@ -427,10 +422,15 @@
   resolved "https://registry.npmjs.org/@remix-run/router/-/router-1.12.0.tgz"
   integrity sha512-2hXv036Bux90e1GXTWSMfNzfDDK8LA8JYEWfyHxzvwdp6GyoWEovKc9cotb3KCKmkdwsIBuFGX7ScTWyiHv7Eg==
 
-"@rollup/rollup-darwin-arm64@4.5.0":
+"@rollup/rollup-win32-x64-msvc@^4.10.0":
+  version "4.10.0"
+  resolved "https://registry.npmjs.org/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.10.0.tgz"
+  integrity sha512-OZoJd+o5TaTSQeFFQ6WjFCiltiYVjIdsXxwu/XZ8qRpsvMQr4UsVrE5UyT9RIvsnuF47DqkJKhhVZ2Q9YW9IpQ==
+
+"@rollup/rollup-win32-x64-msvc@4.5.0":
   version "4.5.0"
-  resolved "https://registry.npmjs.org/@rollup/rollup-darwin-arm64/-/rollup-darwin-arm64-4.5.0.tgz"
-  integrity sha512-L0/CA5p/idVKI+c9PcAPGorH6CwXn6+J0Ys7Gg1axCbTPgI8MeMlhA6fLM9fK+ssFhqogMHFC8HDvZuetOii7w==
+  resolved "https://registry.npmjs.org/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.5.0.tgz"
+  integrity sha512-8kdW+brNhI/NzJ4fxDufuJUjepzINqJKLGHuxyAtpPG9bMbn8P5mtaCcbOm0EzLJ+atg+kF9dwg8jpclkVqx5w==
 
 "@tabler/icons-react@^2.40.0":
   version "2.40.0"
@@ -490,7 +490,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^18.2.37":
+"@types/react@*", "@types/react@^16.8.0 || ^17.0.0 || ^18.0.0", "@types/react@^16.9.0 || ^17.0.0 || ^18.0.0", "@types/react@^18.2.37":
   version "18.2.37"
   resolved "https://registry.npmjs.org/@types/react/-/react-18.2.37.tgz"
   integrity sha512-RGAYMi2bhRgEXT3f4B92WTohopH6bIXw05FuGlmJEnv/omEn190+QYEIYxIAuIBdKgboYYdVved2p1AxZVQnaw==
@@ -525,7 +525,7 @@ acorn-jsx@^5.3.2:
   resolved "https://registry.npmjs.org/acorn-jsx/-/acorn-jsx-5.3.2.tgz"
   integrity sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==
 
-acorn@^8.9.0:
+"acorn@^6.0.0 || ^7.0.0 || ^8.0.0", acorn@^8.9.0:
   version "8.11.2"
   resolved "https://registry.npmjs.org/acorn/-/acorn-8.11.2.tgz"
   integrity sha512-nc0Axzp/0FILLEVsm4fNwLCwMttvhEI263QtVPQcbpfZZ3ts0hLsZGOpE6czNlid7CJ9MlyH8reXkpsf3YUY4w==
@@ -666,7 +666,7 @@ braces@^3.0.2:
   dependencies:
     fill-range "^7.0.1"
 
-browserslist@^4.21.9:
+browserslist@^4.21.9, "browserslist@>= 4.21.0":
   version "4.22.1"
   resolved "https://registry.npmjs.org/browserslist/-/browserslist-4.22.1.tgz"
   integrity sha512-FEVc202+2iuClEhZhrWy6ZiAcRLvNMyYcxZ8raemul1DYVOVdFsbqckWLdsixQZCpJlwe77Z3UTalE7jsjnKfQ==
@@ -775,7 +775,7 @@ csstype@^3.0.2:
   resolved "https://registry.npmjs.org/csstype/-/csstype-3.1.2.tgz"
   integrity sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==
 
-dayjs@^1.11.10:
+dayjs@^1.10.5, dayjs@^1.11.10:
   version "1.11.10"
   resolved "https://registry.npmjs.org/dayjs/-/dayjs-1.11.10.tgz"
   integrity sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==
@@ -842,7 +842,7 @@ electron-to-chromium@^1.4.535:
   resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.588.tgz"
   integrity sha512-soytjxwbgcCu7nh5Pf4S2/4wa6UIu+A3p03U2yVr53qGxi1/VTR3ENI+p50v+UxqqZAfl48j3z55ud7VHIOr9w==
 
-embla-carousel-react@^7.1.0:
+embla-carousel-react@^7.0.0, embla-carousel-react@^7.1.0:
   version "7.1.0"
   resolved "https://registry.npmjs.org/embla-carousel-react/-/embla-carousel-react-7.1.0.tgz"
   integrity sha512-tbYRPRZSDNd2QLNqYDcArAakGIxtUbhS7tkP0dGXktXHGgcX+3ji3VrOUTOftBiujZrMV8kRxtrRUe/1soloIQ==
@@ -1032,7 +1032,7 @@ eslint-visitor-keys@^3.3.0, eslint-visitor-keys@^3.4.1, eslint-visitor-keys@^3.4
   resolved "https://registry.npmjs.org/eslint-visitor-keys/-/eslint-visitor-keys-3.4.3.tgz"
   integrity sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag==
 
-eslint@^8.53.0:
+"eslint@^3 || ^4 || ^5 || ^6 || ^7 || ^8", "eslint@^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0", "eslint@^6.0.0 || ^7.0.0 || >=8.0.0", eslint@^8.53.0, eslint@>=7:
   version "8.54.0"
   resolved "https://registry.npmjs.org/eslint/-/eslint-8.54.0.tgz"
   integrity sha512-NY0DfAkM8BIZDVl6PgSa1ttZbx3xHgJzSNJKYcQglem6CppHyMhRIQkBVSSMaSRnLhig3jsDbEzOjwCVt4AmmA==
@@ -1189,11 +1189,6 @@ fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   integrity sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==
-
-fsevents@~2.3.2, fsevents@~2.3.3:
-  version "2.3.3"
-  resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
-  integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
 function-bind@^1.1.1, function-bind@^1.1.2:
   version "1.1.2"
@@ -1891,7 +1886,7 @@ postcss-simple-vars@^7.0.0, postcss-simple-vars@^7.0.1:
   resolved "https://registry.npmjs.org/postcss-simple-vars/-/postcss-simple-vars-7.0.1.tgz"
   integrity sha512-5GLLXaS8qmzHMOjVxqkk1TZPf1jMqesiI7qLhnlyERalG0sMbHIbJqrcnrpmZdKCLglHnRHoEBB61RtGTsj++A==
 
-postcss@^8.4.31:
+postcss@^8.2.1, postcss@^8.2.14, postcss@^8.3.3, postcss@^8.4.21, postcss@^8.4.31, postcss@>=8.0.0:
   version "8.4.31"
   resolved "https://registry.npmjs.org/postcss/-/postcss-8.4.31.tgz"
   integrity sha512-PS08Iboia9mts/2ygV3eLpY5ghnUcfLV/EXTOW1E2qYxJKGGBUtNjN76FYHnMs36RmARn41bC0AZmn+rR0OVpQ==
@@ -1924,7 +1919,7 @@ queue-microtask@^1.2.2:
   resolved "https://registry.npmjs.org/queue-microtask/-/queue-microtask-1.2.3.tgz"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
-react-dom@^18.2.0:
+"react-dom@^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", react-dom@^18.2.0, react-dom@>=16.6.0, react-dom@>=16.8, react-dom@>=16.8.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-18.2.0.tgz"
   integrity sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==
@@ -2018,7 +2013,7 @@ react-transition-group@4.4.5:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react@^18.2.0:
+"react@^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.5.1 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.1 || ^18.0.0", react@^18.2.0, "react@>= 16.8 || 18.0.0", react@>=16.6.0, react@>=16.8, react@>=16.8.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
@@ -2233,7 +2228,7 @@ strip-json-comments@^3.1.1:
   resolved "https://registry.npmjs.org/strip-json-comments/-/strip-json-comments-3.1.1.tgz"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
-sugarss@^4.0.1:
+sugarss@*, sugarss@^4.0.1:
   version "4.0.1"
   resolved "https://registry.npmjs.org/sugarss/-/sugarss-4.0.1.tgz"
   integrity sha512-WCjS5NfuVJjkQzK10s8WOBY+hhDxxNt/N6ZaGwxFZ+wN3/lKKFSaaKUNecULcTTvE4urLcKaZFQD8vO0mOZujw==
@@ -2407,7 +2402,7 @@ vanta@^0.5.24:
   resolved "https://registry.npmjs.org/vanta/-/vanta-0.5.24.tgz"
   integrity sha512-fvieEbHy1ZS23zrcX+topzqAgA4Uct1enngOEWLFBgs9TtOf6RDFOYatH7KSVdrABzQDMCQ5myQy+nTSZZwLzg==
 
-vite@^5.0.0:
+"vite@^4.2.0 || ^5.0.0", vite@^5.0.0:
   version "5.0.0"
   resolved "https://registry.npmjs.org/vite/-/vite-5.0.0.tgz"
   integrity sha512-ESJVM59mdyGpsiNAeHQOR/0fqNoOyWPYesFto8FFZugfmhdHx8Fzd8sF3Q/xkVhZsyOxHfdM7ieiVAorI9RjFw==

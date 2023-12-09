@@ -111,7 +111,7 @@ function ReporterList() {
   return (
     <Box>
       <Group p="md" justify="space-between">
-        <Title>Reported Issues</Title>
+        <Title>REPORTED NMRs</Title>
         <Button>New report</Button>
       </Group>
       <Box p="md">

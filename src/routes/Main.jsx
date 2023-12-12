@@ -15,7 +15,7 @@ export default function Main() {
 
   const tabs = [
     {
-      label: "Reporter's Page",
+      label: "Home",
       role: ["reporter"],
       value: "myList",
     },
@@ -30,7 +30,7 @@ export default function Main() {
       value: "listAll",
     },
     {
-      label: "NMR Book",
+      label: "Accident Book",
       role: ["reporter", "manager", "supervisor"],
       value: "accidentBook",
     },
@@ -81,7 +81,7 @@ export default function Main() {
       <Center h={"100vh"}>
         <Box
           miw={"60vw"}
-          mih={"80vh"}
+          mih={"90vh"}
           style={{ position: "relative", backgroundColor: "transparent" }}
         >
           <Overlay backgroundOpacity={0.35} blur={10}>

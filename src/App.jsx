@@ -18,6 +18,7 @@ import Login from "./routes/Login";
 import { routeList } from "./routes/routeList";
 import Main from "./routes/Main";
 import ReporterList from "./routes/ReporterList";
+import ReportDetail from "./routes/ReportDetail";
 
 const theme = createTheme({
   primaryColor: "blue",
@@ -32,6 +33,8 @@ const router = createBrowserRouter(
       <Route path={routeList.login} element={<Login />} />
       <Route path={routeList.main} element={<Main />}>
         <Route path={routeList.reporterList} element={<ReporterList />} />
+        <Route path={routeList.newReport} element={<ReportDetail />} />
+        <Route path={routeList.detail} element={<ReportDetail />} />
       </Route>
       {/* 
       <Route path={routeList.appShell} element={<MyAppShell />}>

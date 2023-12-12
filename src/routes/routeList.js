@@ -4,6 +4,7 @@ export const routeList = {
 
   reporterList: "myList",
   newReport: "new",
+  detail: "report/:id",
   managerList: "list",
   supervisorList: "listAll",
   accidentBook: "accidentBook",

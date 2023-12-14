@@ -1,4 +1,5 @@
 import { Avatar, Box, Center, Group, Overlay, Text } from "@mantine/core";
+import { useSDK } from "@metamask/sdk-react";
 import { useState, useEffect, useRef } from "react";
 import NET from "vanta/src/vanta.net";
 import logo from "../assets/logoWhite.png";
@@ -9,6 +10,9 @@ import VerifyUser from "./VerifyUser";
 export default function Login() {
   const [vantaEffect, setVantaEffect] = useState(null);
   const myRef = useRef(null);
+
+  const [account, setAccount] = useState();
+  const { sdk, connected, connecting, provider, chainId } = useSDK();
 
   const [embla, setEmbla] = useState(null);
 
@@ -35,8 +39,15 @@ export default function Login() {
     };
   }, [vantaEffect]);
 
-  const onConnect = () => {
-    embla?.scrollNext();
+  const onConnect = async () => {
+    try {
+      const accounts = await sdk?.connect();
+      console.log("Connected: ", accounts?.[0], connected, provider, chainId);
+      setAccount(accounts?.[0]);
+    } catch (err) {
+      console.warn("failed to connect..", err);
+    }
+    // embla?.scrollNext();
   };
 
   return (

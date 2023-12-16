@@ -17,6 +17,7 @@
     "@mantine/form": "^7.2.2",
     "@mantine/hooks": "^7.2.2",
     "@mantine/notifications": "^7.2.2",
+    "@rollup/rollup-win32-x64-msvc": "^4.10.0",
     "@tabler/icons-react": "^2.40.0",
     "dayjs": "^1.11.10",
     "embla-carousel-react": "^7.1.0",

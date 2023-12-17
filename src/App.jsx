@@ -19,6 +19,11 @@ import { routeList } from "./routes/routeList";
 import Main from "./routes/Main";
 import ReporterList from "./routes/ReporterList";
 import ReportDetail from "./routes/ReportDetail";
+import NewReport from "./routes/NewReport";
+import NmrBook from "./routes/NmrBook";
+import ManagerList from "./routes/ManagerList";
+import { UserProvider } from "./context/UserContext";
+import SupervisorList from "./routes/SupervisorList";
 
 const theme = createTheme({
   primaryColor: "blue",
@@ -33,30 +38,27 @@ const router = createBrowserRouter(
       <Route path={routeList.login} element={<Login />} />
       <Route path={routeList.main} element={<Main />}>
         <Route path={routeList.reporterList} element={<ReporterList />} />
-        <Route path={routeList.newReport} element={<ReportDetail />} />
+        <Route path={routeList.newReport} element={<NewReport />} />
         <Route path={routeList.detail} element={<ReportDetail />} />
+        <Route path={routeList.nmrBook} element={<NmrBook />} />
+        <Route path={routeList.managerList} element={<ManagerList />} />
+        <Route path={routeList.supervisorList} element={<SupervisorList />} />
       </Route>
-      {/* 
-      <Route path={routeList.appShell} element={<MyAppShell />}>
-        <Route path={routeList.map} element={<MapView />} />
-        <Route path={routeList.site} element={<Site />} />
-        <Route path={routeList.feeds} element={<Feeds />} />
-        <Route path={routeList.settings} element={<DeviceSettings />} />
-        <Route path={routeList.profile} element={<MyProfile />} />
-      </Route> */}
     </Route>
   )
 );
 
 export default function App() {
   return (
-    <MantineProvider
-      theme={theme}
-      defaultColorScheme="dark"
-      forceColorScheme="dark"
-    >
-      <Notifications />
-      <RouterProvider router={router} />
-    </MantineProvider>
+    <UserProvider>
+      <MantineProvider
+        theme={theme}
+        defaultColorScheme="dark"
+        forceColorScheme="dark"
+      >
+        <Notifications />
+        <RouterProvider router={router} />
+      </MantineProvider>
+    </UserProvider>
   );
 }

@@ -1,18 +1,34 @@
 import { Box, Button, FileButton, Stack, Stepper, Text } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { notifications } from "@mantine/notifications";
 import { useNavigate } from "react-router-dom";
 import { routeList } from "./routeList";
+import { UserContext } from "../context/UserContext";
 
 export default function VerifyUser({}) {
   const [active, setActive] = useState(0);
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [verificationFailed, setVerificationFailed] = useState(false);
+  const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleDownload = () => {
     setActive(1);
+  };
+
+  const getNavigateTo = (role) => {
+    switch (role) {
+      case "reporter":
+        return "myList";
+      case "manager":
+        return "list";
+      case "supervisor":
+        return "listAll";
+
+      default:
+        return "";
+    }
   };
 
   useEffect(() => {
@@ -21,8 +37,12 @@ export default function VerifyUser({}) {
       setLoading(true);
       setTimeout(() => {
         if (!verificationFailed) {
-          console.log("//?");
-          navigate("/" + routeList.main, { replace: true });
+          //TEMP
+          const user = { role: "supervisor", id: "0x74****44e" };
+          setUser(user);
+          navigate(`/${routeList.main}/${getNavigateTo(user?.role)}`, {
+            replace: true,
+          });
         } else {
           setVerificationFailed(true);
           setLoading(false);

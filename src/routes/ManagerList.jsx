@@ -1,25 +1,20 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Group, Box, Table, Title, Button } from "@mantine/core";
 import moment from "moment";
 import reports from "../data/reports";
 import StatusBadge from "../components/StatusBadge";
 import { useNavigate } from "react-router-dom";
 import { routeList } from "./routeList";
-import { UserContext } from "../context/UserContext";
+import PendingTime from "../components/PendingTime";
 
-function ReporterList() {
-  const { user } = useContext(UserContext);
+function ManagerList() {
   const navigate = useNavigate();
-  const data = reports.filter((item) => item.user === user?.id);
+  const data = reports;
+
   return (
     <Box>
       <Group p="md" justify="space-between">
         <Title>REPORTED NMRs</Title>
-        <Button
-          onClick={() => navigate(`/${routeList.main}/${routeList.newReport}`)}
-        >
-          New report
-        </Button>
       </Group>
       <Box p="md">
         <Table.ScrollContainer h={"calc(90vh - 200px)"}>
@@ -29,6 +24,7 @@ function ReporterList() {
                 <Table.Th>Report No.</Table.Th>
                 <Table.Th>Title</Table.Th>
                 <Table.Th>Reported at</Table.Th>
+                <Table.Th>Pending Time</Table.Th>
                 <Table.Th>Status</Table.Th>
               </Table.Tr>
             </Table.Thead>
@@ -51,6 +47,13 @@ function ReporterList() {
                   <Table.Td>{element.title}</Table.Td>
                   <Table.Td>{moment(element.createdAt).format("LL")}</Table.Td>
                   <Table.Td>
+                    {element.status === "pending" ? (
+                      <PendingTime time={element.createdAt} />
+                    ) : (
+                      ""
+                    )}
+                  </Table.Td>
+                  <Table.Td>
                     <StatusBadge status={element.status} />
                   </Table.Td>
                 </Table.Tr>
@@ -63,4 +66,4 @@ function ReporterList() {
   );
 }
 
-export default ReporterList;
+export default ManagerList;

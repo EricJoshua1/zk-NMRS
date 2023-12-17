@@ -1,17 +1,41 @@
-import { Avatar, Center, Group, Overlay, Text, Box, Tabs } from "@mantine/core";
-import { useEffect, useRef, useState } from "react";
+import {
+  Avatar,
+  Center,
+  Group,
+  Overlay,
+  Text,
+  Box,
+  Tabs,
+  Menu,
+  rem,
+  Button,
+} from "@mantine/core";
+import { useContext, useEffect, useRef, useState } from "react";
 import logo from "../assets/logoWhite.png";
 import NET from "vanta/src/vanta.net";
-import { Outlet, useNavigate } from "react-router-dom";
-import { IconWallet } from "@tabler/icons-react";
-
-const currentUserRole = "reporter";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { IconWallet, IconWalletOff } from "@tabler/icons-react";
+import { UserContext } from "../context/UserContext";
+import { routeList } from "./routeList";
 
 export default function Main() {
+  const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate(`/${routeList.login}`, { replace: true });
+    }
+  }, []);
+
   const [vantaEffect, setVantaEffect] = useState(null);
   const myRef = useRef(null);
-  const [tab, setTab] = useState("accidentBook");
-  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const getDefaultTab = () => {
+    let current = pathname.split("/")?.[2];
+    return current;
+  };
+  const [tab, setTab] = useState(getDefaultTab());
 
   const tabs = [
     {
@@ -20,19 +44,19 @@ export default function Main() {
       value: "myList",
     },
     {
-      label: "Home",
+      label: "Manager's Page",
       role: ["manager"],
       value: "list",
     },
     {
-      label: "Home",
+      label: "Supervisor's Page",
       role: ["supervisor"],
       value: "listAll",
     },
     {
       label: "NMR Book",
       role: ["reporter", "manager", "supervisor"],
-      value: "accidentBook",
+      value: "nmrBook",
     },
   ];
 
@@ -90,20 +114,51 @@ export default function Main() {
                 <Tabs.List>
                   {tabs.map(
                     (item) =>
-                      item.role.includes(currentUserRole) && (
+                      item.role.includes(user?.role) && (
                         <Tabs.Tab value={item.value} key={item.value}>
                           {item.label}
                         </Tabs.Tab>
                       )
                   )}
-                  <Tabs.Tab value="account" ml="auto">
-                    <Group gap={"xs"}>
-                      <Avatar radius="xl">
-                        <IconWallet />
-                      </Avatar>
-                      0x74****44e
-                    </Group>
-                  </Tabs.Tab>
+                  <Menu shadow="md" width={200} ml="auto" mb="xs">
+                    <Menu.Target>
+                      <Button
+                        color="gray"
+                        variant="transparent"
+                        styles={{
+                          label: {
+                            fontWeight: "unset",
+                          },
+                        }}
+                        leftSection={
+                          <Avatar radius="xl">
+                            <IconWallet
+                              style={{ width: rem(18), height: rem(18) }}
+                              stroke={1.5}
+                            />
+                          </Avatar>
+                        }
+                      >
+                        {user?.id}
+                      </Button>
+                    </Menu.Target>
+
+                    <Menu.Dropdown>
+                      <Menu.Item
+                        onClick={() => {
+                          setUser();
+                          navigate(`/${routeList.login}`);
+                        }}
+                        leftSection={
+                          <IconWalletOff
+                            style={{ width: rem(14), height: rem(14) }}
+                          />
+                        }
+                      >
+                        Disconnect Wallet
+                      </Menu.Item>
+                    </Menu.Dropdown>
+                  </Menu>
                 </Tabs.List>
               </Tabs>
               <Outlet />

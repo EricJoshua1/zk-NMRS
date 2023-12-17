@@ -12,6 +12,13 @@ const data = [
     locationOfEvent: "Basement",
     severity: "serious",
     injuredObject: "Foundation",
+    files: [
+      { url: "https://someadress.com/files/snacks.png", name: "snacks.png" },
+      {
+        url: "https://someadress.com/files/photo123.png",
+        name: "photo123.png",
+      },
+    ],
   },
   {
     reportNumber: 15,
@@ -40,6 +47,9 @@ const data = [
     locationOfEvent: "Exterior of Building",
     severity: "serious",
     injuredObject: "Workers and Public",
+    files: [
+      { url: "https://someadress.com/files/snacks.png", name: "photo123.png" },
+    ],
   },
   {
     reportNumber: 13,
@@ -68,6 +78,18 @@ const data = [
     locationOfEvent: "Stairwell",
     severity: "minor",
     injuredObject: "Workers and Visitors",
+    files: [
+      { url: "https://someadress.com/files/snacks.png", name: "photo123.png" },
+      {
+        url: "https://someadress.com/files/photo123.png",
+        name: "photo123.png",
+      },
+      { url: "https://someadress.com/files/sn2acks.png", name: "photo123.png" },
+      {
+        url: "https://someadress.com/files/pho3to123.png",
+        name: "photo123.png",
+      },
+    ],
   },
 
   {
@@ -188,7 +210,7 @@ const data = [
     createdAt: new Date("2024-02-06"),
     description:
       "Received reports of collapsed scaffolding on the west side of the building. This poses an immediate danger to workers and bystanders. Rescue operations and structural assessment are required.",
-    status: "pending",
+    status: "accepted",
     user: "0x74****44e",
     category: "accident",
     dateOfEvent: new Date("2024-02-06"),
@@ -202,7 +224,7 @@ const data = [
     createdAt: new Date("2024-02-05"),
     description:
       "Residents in the vicinity have reported excessive noise levels from construction activities during non-permitted hours. Enforce noise control measures to maintain a peaceful environment for the community.",
-    status: "pending",
+    status: "accepted",
     user: "0x74****44e",
     category: "other",
     dateOfEvent: new Date("2024-02-05"),

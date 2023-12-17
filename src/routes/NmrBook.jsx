@@ -1,25 +1,19 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Group, Box, Table, Title, Button } from "@mantine/core";
 import moment from "moment";
 import reports from "../data/reports";
 import StatusBadge from "../components/StatusBadge";
 import { useNavigate } from "react-router-dom";
 import { routeList } from "./routeList";
-import { UserContext } from "../context/UserContext";
+import { category } from "../data/options";
 
-function ReporterList() {
-  const { user } = useContext(UserContext);
+function NmrBook() {
   const navigate = useNavigate();
-  const data = reports.filter((item) => item.user === user?.id);
+  const data = reports.filter((item) => item.status === "accepted");
   return (
     <Box>
       <Group p="md" justify="space-between">
-        <Title>REPORTED NMRs</Title>
-        <Button
-          onClick={() => navigate(`/${routeList.main}/${routeList.newReport}`)}
-        >
-          New report
-        </Button>
+        <Title>NMR History</Title>
       </Group>
       <Box p="md">
         <Table.ScrollContainer h={"calc(90vh - 200px)"}>
@@ -27,9 +21,9 @@ function ReporterList() {
             <Table.Thead>
               <Table.Tr>
                 <Table.Th>Report No.</Table.Th>
+                <Table.Th>Category</Table.Th>
                 <Table.Th>Title</Table.Th>
-                <Table.Th>Reported at</Table.Th>
-                <Table.Th>Status</Table.Th>
+                <Table.Th>Date of Event</Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
@@ -48,10 +42,13 @@ function ReporterList() {
                   }
                 >
                   <Table.Td>{element.reportNumber}</Table.Td>
-                  <Table.Td>{element.title}</Table.Td>
-                  <Table.Td>{moment(element.createdAt).format("LL")}</Table.Td>
                   <Table.Td>
-                    <StatusBadge status={element.status} />
+                    {category.find((item) => item.value === element.category)
+                      ?.label ?? ""}
+                  </Table.Td>
+                  <Table.Td>{element.title}</Table.Td>
+                  <Table.Td>
+                    {moment(element.dateOfEvent).format("LL")}
                   </Table.Td>
                 </Table.Tr>
               ))}
@@ -63,4 +60,4 @@ function ReporterList() {
   );
 }
 
-export default ReporterList;
+export default NmrBook;

@@ -7,5 +7,5 @@ export const routeList = {
   detail: "report/:id",
   managerList: "list",
   supervisorList: "listAll",
-  accidentBook: "accidentBook",
+  nmrBook: "nmrBook",
 };

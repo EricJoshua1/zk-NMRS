@@ -1,4 +1,12 @@
-import { Box, Button, FileButton, Stack, Stepper, Text } from "@mantine/core";
+import {
+  Box,
+  Button,
+  FileButton,
+  Stack,
+  Stepper,
+  Text,
+  NativeSelect,
+} from "@mantine/core";
 import { useContext, useEffect, useState } from "react";
 import { notifications } from "@mantine/notifications";
 import { useNavigate } from "react-router-dom";
@@ -10,11 +18,15 @@ export default function VerifyUser({}) {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [verificationFailed, setVerificationFailed] = useState(false);
+  const [role, setRole] = useState("Reporter");
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleDownload = () => {
-    setActive(1);
+    const role = prompt(
+      "Please enter your role. i.e: reporter, manager, supervisor"
+    );
+    // setActive(1);
   };
 
   const getNavigateTo = (role) => {
@@ -30,6 +42,10 @@ export default function VerifyUser({}) {
         return "";
     }
   };
+
+  useEffect(() => {
+    console.log(role);
+  }, [role]);
 
   useEffect(() => {
     if (file) {
@@ -99,6 +115,13 @@ export default function VerifyUser({}) {
           />
         </Stepper>
       </Box>
+      <NativeSelect
+        label="Your Role"
+        description="Please select your role."
+        value={role}
+        onChange={(event) => setRole(event.currentTarget.value)}
+        data={["Reporter", "Manager", "Supervisor"]}
+      />
       <Stack>
         <Button onClick={handleDownload}>Download</Button>
         <FileButton

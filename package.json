@@ -19,6 +19,7 @@
     "@mantine/notifications": "^7.2.2",
     "@metamask/sdk-react": "^0.15.0",
     "@tabler/icons-react": "^2.40.0",
+    "@thirdweb-dev/storage": "^2.0.9",
     "dayjs": "^1.11.10",
     "embla-carousel-react": "^7.1.0",
     "moment": "^2.30.1",

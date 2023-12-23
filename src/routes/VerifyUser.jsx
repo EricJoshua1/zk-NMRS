@@ -12,6 +12,19 @@ import { notifications } from "@mantine/notifications";
 import { useNavigate } from "react-router-dom";
 import { routeList } from "./routeList";
 import { UserContext } from "../context/UserContext";
+import { ThirdwebStorage } from "@thirdweb-dev/storage";
+import { ContractContext } from "../context/ContractContext";
+
+const storage = new ThirdwebStorage({
+  clientId: "35652609a2a228a0cd933c8727a3bab9",
+});
+
+const reporterIPFSHash =
+  "ipfs://QmWAh5rZvRw2Nf4zGwR8NWLd2t6prp3a7gJEiUVM7FpLLP/proving.zip";
+const managerIPFSHash =
+  "ipfs://Qma5iVk9UqRe7SMw5V4d3dgbQBrZixvo99rVxQ9Fr6LqAQ/proving.zip";
+const supervisorIPFSHash =
+  "ipfs://QmNZNLvSKhBLkuxqjPYerAe9ihoBxJqvNcisBw5QWFaoEL/proving.zip";
 
 export default function VerifyUser({}) {
   const [active, setActive] = useState(0);
@@ -19,14 +32,27 @@ export default function VerifyUser({}) {
   const [loading, setLoading] = useState(false);
   const [verificationFailed, setVerificationFailed] = useState(false);
   const [role, setRole] = useState("Reporter");
+  const [proof, setProof] = useState();
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const handleDownload = () => {
-    const role = prompt(
-      "Please enter your role. i.e: reporter, manager, supervisor"
-    );
-    // setActive(1);
+  const { contract } = useContext(ContractContext);
+
+  const handleDownload = async () => {
+    let uri;
+    if (role == "Reporter") uri = reporterIPFSHash;
+    else if (role == "Manager") uri = managerIPFSHash;
+    else uri = supervisorIPFSHash;
+
+    const result = await storage.download(uri);
+
+    if (result.status == 200) {
+      console.log(result.url);
+      window.open(result.url, "_blank");
+      setActive(1);
+    } else {
+      console.log(result);
+    }
   };
 
   const getNavigateTo = (role) => {
@@ -43,34 +69,101 @@ export default function VerifyUser({}) {
     }
   };
 
-  useEffect(() => {
-    console.log(role);
-  }, [role]);
+  const handleReadProof = (file) => {
+    setLoading(true);
+    if (file.type != "application/json") {
+      setLoading(false);
+      notifications.show({
+        color: "red",
+        title: "Wrong File Format",
+        message: "Please upload proof.json file.",
+      });
+      return;
+    }
+
+    let fileReader = new FileReader();
+
+    const handleReadFile = () => {
+      const content = fileReader.result;
+      setProof(JSON.parse(content));
+      setFile(file);
+      setActive(3);
+    };
+
+    fileReader.onloadend = handleReadFile;
+    fileReader.readAsText(file);
+  };
+
+  const handleVerifyingUser = async (pf) => {
+    let rl;
+    if (role == "Reporter") rl = 0;
+    else if (role == "Manager") rl = 1;
+    else rl = 2;
+
+    const data = await contract.methods.addUser(pf, rl).send({ from: user.id });
+
+    if (data.events) {
+      const { UserAdded: userAddedEvent } = data.events;
+      console.log(userAddedEvent.returnValues[0]);
+      console.log(userAddedEvent.returnValues[1]);
+
+      const address = userAddedEvent.returnValues[0];
+      const role = userAddedEvent.returnValues[1];
+
+      setUser({ id: address, role });
+      navigate(`/${routeList.main}/${getNavigateTo(user?.role)}`, {
+        replace: true,
+      });
+    } else {
+      setVerificationFailed(true);
+      setLoading(false);
+      notifications.show({
+        color: "red",
+        title: "Verification failed",
+        message: "Please try again",
+      });
+      console.log(data);
+    }
+  };
 
   useEffect(() => {
-    if (file) {
-      setActive(3);
-      setLoading(true);
-      setTimeout(() => {
-        if (!verificationFailed) {
-          //TEMP
-          const user = { role: "supervisor", id: "0x74****44e" };
-          setUser(user);
-          navigate(`/${routeList.main}/${getNavigateTo(user?.role)}`, {
-            replace: true,
-          });
-        } else {
-          setVerificationFailed(true);
-          setLoading(false);
-          notifications.show({
-            color: "red",
-            title: "Verification failed",
-            message: "Please try again",
-          });
-        }
-      }, 2000);
+    if (proof) {
+      let pf = [];
+
+      pf.push(proof.proof.a);
+      pf.push(proof.proof.b);
+      pf.push(proof.proof.c);
+
+      console.log(JSON.stringify(pf));
+      handleVerifyingUser(pf);
     }
-  }, [file]);
+  }, [proof]);
+
+  // useEffect(() => {
+  //   if (file) {
+  //     handleReadProof(file);
+  //     setLoading(true);
+
+  //     // setTimeout(() => {
+  //     //   if (!verificationFailed) {
+  //     //     //TEMP
+  //     //     const user = { role: "supervisor", id: "0x74****44e" };
+  //     //     setUser(user);
+  //     //     navigate(`/${routeList.main}/${getNavigateTo(user?.role)}`, {
+  //     //       replace: true,
+  //     //     });
+  //     //   } else {
+  //     //     setVerificationFailed(true);
+  //     //     setLoading(false);
+  //     //     notifications.show({
+  //     //       color: "red",
+  //     //       title: "Verification failed",
+  //     //       message: "Please try again",
+  //     //     });
+  //     //   }
+  //     // }, 2000);
+  //   }
+  // }, [file]);
 
   return (
     <Stack h={"100%"} justify="space-between">
@@ -125,7 +218,7 @@ export default function VerifyUser({}) {
       <Stack>
         <Button onClick={handleDownload}>Download</Button>
         <FileButton
-          onChange={setFile}
+          onChange={handleReadProof}
           // accept="application/JSON"
         >
           {(props) => (

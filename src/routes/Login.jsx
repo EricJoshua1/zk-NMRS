@@ -1,14 +1,20 @@
 import { Avatar, Box, Center, Group, Overlay, Text } from "@mantine/core";
 import { useSDK } from "@metamask/sdk-react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import NET from "vanta/src/vanta.net";
 import logo from "../assets/logoWhite.png";
 import { Carousel } from "@mantine/carousel";
+import { useNavigate } from "react-router-dom";
 import ConnectWallet from "./ConeectWallet";
 import VerifyUser from "./VerifyUser";
 import Web3 from "web3";
+import { ContractContext } from "../context/ContractContext";
+import { UserContext } from "../context/UserContext";
+import { routeList } from "./routeList";
+
 // var Contract = require('web3-eth-contract');
 
+const contractAddress = "0x8654d86f170f74ef7746bf37b2e97e9d4b0fdcb8";
 const contractABI = [
   {
     inputs: [
@@ -70,6 +76,11 @@ const contractABI = [
         name: "proof",
         type: "tuple",
       },
+      {
+        internalType: "uint256",
+        name: "role",
+        type: "uint256",
+      },
     ],
     name: "addUser",
     outputs: [
@@ -79,6 +90,24 @@ const contractABI = [
         type: "bool",
       },
     ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "reportId",
+        type: "uint256",
+      },
+      {
+        internalType: "enum UserRegistration.ReportStatus",
+        name: "newStatus",
+        type: "uint8",
+      },
+    ],
+    name: "changeReportStatus",
+    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -110,6 +139,25 @@ const contractABI = [
         type: "uint256",
       },
       {
+        indexed: false,
+        internalType: "enum UserRegistration.ReportStatus",
+        name: "newStatus",
+        type: "uint8",
+      },
+    ],
+    name: "IncidentReportStatusChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "reportId",
+        type: "uint256",
+      },
+      {
         indexed: true,
         internalType: "address",
         name: "reporter",
@@ -120,6 +168,25 @@ const contractABI = [
     type: "event",
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "userRole",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "role",
+        type: "string",
+      },
+    ],
+    name: "UserAdded",
+    type: "event",
+  },
+  {
     inputs: [],
     name: "checkUser",
     outputs: [
@@ -127,6 +194,11 @@ const contractABI = [
         internalType: "bool",
         name: "",
         type: "bool",
+      },
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
       },
     ],
     stateMutability: "view",
@@ -157,6 +229,30 @@ const contractABI = [
         name: "description",
         type: "string",
       },
+      {
+        internalType: "enum UserRegistration.ReportStatus",
+        name: "status",
+        type: "uint8",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "isUserVerified",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
     ],
     stateMutability: "view",
     type: "function",
@@ -174,20 +270,40 @@ const contractABI = [
     stateMutability: "view",
     type: "function",
   },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "userRole",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
 ];
 
-const contractAddress = "0xc973faAf7c7FF351BAF2A73Cad12Db83ccfBCCB5";
+const web3 = new Web3(window.ethereum);
 
 export default function Login() {
   const [vantaEffect, setVantaEffect] = useState(null);
   const myRef = useRef(null);
+  const navigate = useNavigate();
 
+  const { user, setUser } = useContext(UserContext);
+  const { contract, setContract } = useContext(ContractContext);
   const [account, setAccount] = useState();
   const { sdk, connected, connecting, provider, chainId } = useSDK();
 
   const [embla, setEmbla] = useState(null);
-
-  const web3 = new Web3(window.ethereum);
 
   useEffect(() => {
     if (!vantaEffect) {
@@ -212,25 +328,62 @@ export default function Login() {
     };
   }, [vantaEffect]);
 
+  useEffect(() => {
+    if (contract) {
+      handleCheckUser();
+    }
+  }, [contract]);
+
+  const getNavigateTo = (role) => {
+    switch (role) {
+      case "reporter":
+        return "myList";
+      case "manager":
+        return "list";
+      case "supervisor":
+        return "listAll";
+
+      default:
+        return "";
+    }
+  };
+
+  const handleCheckUser = async () => {
+    console.log(contract);
+
+    const result = await contract.methods.checkUser().call({ from: account });
+    console.log("DATA FROM CONTRACT: ", result[0], result[1]);
+
+    const isVerified = result[0];
+
+    if (isVerified == true) {
+      const role = result[1];
+      // const user = { role: "supervisor", id: "0x74****44e" };
+      setUser({ id: account, role });
+      navigate(`/${routeList.main}/${getNavigateTo(user?.role)}`, {
+        replace: true,
+      });
+    } else embla?.scrollNext();
+  };
+
   const onConnect = async () => {
-    // try {
-    //   const accounts = await sdk?.connect();
-    //   console.log("Connected: ", accounts?.[0], connected, provider, chainId);
-    //   setAccount(accounts?.[0]);
+    try {
+      const accounts = await sdk?.connect();
+      // console.log("Connected: ", accounts?.[0], connected, provider, chainId);
+      setAccount(accounts?.[0]);
+      setUser({ id: accounts?.[0] });
 
-    //   web3.account = account;
+      web3.account = account;
+      const contractInstance = new web3.eth.Contract(
+        contractABI,
+        contractAddress
+      );
 
-    //   const contractInstance = new web3.eth.Contract(
-    //     contractABI,
-    //     contractAddress
-    //   );
-
-    //   const data = await contractInstance.methods.checkUser().call();
-    //   console.log("DATA FROM CONTRACT: ", data);
-    // } catch (err) {
-    //   console.warn("failed to connect..", err);
-    // }
-    embla?.scrollNext();
+      setContract(contractInstance);
+    } catch (err) {
+      console.warn("failed to connect..", err);
+    }
+    // embla?.scrollNext();
   };
 
   return (

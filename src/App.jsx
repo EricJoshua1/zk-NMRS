@@ -7,6 +7,7 @@ import "./App.css";
 
 import { MantineProvider, createTheme } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
+import { useState } from "react";
 import {
   Route,
   RouterProvider,
@@ -24,6 +25,7 @@ import NmrBook from "./routes/NmrBook";
 import ManagerList from "./routes/ManagerList";
 import { UserProvider } from "./context/UserContext";
 import SupervisorList from "./routes/SupervisorList";
+import { ContractProvider } from "./context/ContractContext";
 
 const theme = createTheme({
   primaryColor: "blue",
@@ -50,15 +52,17 @@ const router = createBrowserRouter(
 
 export default function App() {
   return (
-    <UserProvider>
-      <MantineProvider
-        theme={theme}
-        defaultColorScheme="dark"
-        forceColorScheme="dark"
-      >
-        <Notifications />
-        <RouterProvider router={router} />
-      </MantineProvider>
-    </UserProvider>
+    <ContractProvider>
+      <UserProvider>
+        <MantineProvider
+          theme={theme}
+          defaultColorScheme="dark"
+          forceColorScheme="dark"
+        >
+          <Notifications />
+          <RouterProvider router={router} />
+        </MantineProvider>
+      </UserProvider>
+    </ContractProvider>
   );
 }

@@ -360,7 +360,7 @@ export default function Login() {
       const role = result[1];
       // const user = { role: "supervisor", id: "0x74****44e" };
       setUser({ id: account, role });
-      navigate(`/${routeList.main}/${getNavigateTo(user?.role)}`, {
+      navigate(`/${routeList.main}/${getNavigateTo(role)}`, {
         replace: true,
       });
     } else embla?.scrollNext();

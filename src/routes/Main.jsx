@@ -24,6 +24,7 @@ export default function Main() {
 
   useEffect(() => {
     if (!user) {
+      console.log("MAIN USER: ", user);
       navigate(`/${routeList.login}`, { replace: true });
     }
   }, []);

@@ -19,11 +19,22 @@ const NewReport = () => {
       severity: "",
       title: "",
       description: "",
-      injuredObject: "",
+      involvedObject: "",
       files: [],
     },
 
-    validate: {},
+    validate: {
+      category: (value) => (!value ? "Category is required!" : null),
+      dateOfEvent: (value) => (!value ? "Date of event is required!" : null),
+      locationOfEvent: (value) =>
+        !value ? "Location of event is required!" : null,
+      severity: (value) =>
+        !value ? "Urgency of Intervention is required!" : null,
+      title: (value) => (!value ? "Title is required!" : null),
+      description: (value) => (!value ? "Description is required!" : null),
+      involvedObject: (value) =>
+        !value ? "Involved object is required!" : null,
+    },
   });
 
   return (

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Group, Box, Table, Title, Button } from "@mantine/core";
 import moment from "moment";
 import reports from "../data/reports";
@@ -11,6 +11,11 @@ function ReporterList() {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const data = reports.filter((item) => item.user === user?.id);
+
+  useEffect(() => {
+    console.log("Use effect from reporter list.");
+  }, []);
+
   return (
     <Box>
       <Group p="md" justify="space-between">

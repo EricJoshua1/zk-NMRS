@@ -31,21 +31,24 @@ const FileUploader = ({
           No supporting files
         </Text>
       )}
-      {currentValue.map((item, index) => {
-        return (
-          <Anchor
-            key={index.toString()}
-            href={
-              item.url ? item.url : `https://someadress.com/files/${item.name}`
-            }
-            target="_blank"
-            underline="hover"
-            style={{ display: "block" }}
-          >
-            {item.url ?? `https://someadress.com/files/${item.name}`}
-          </Anchor>
-        );
-      })}
+      {readOnly &&
+        currentValue.map((item, index) => {
+          return (
+            <Anchor
+              key={index.toString()}
+              href={
+                item.url
+                  ? item.url
+                  : `https://someadress.com/files/${item.name}`
+              }
+              target="_blank"
+              underline="hover"
+              style={{ display: "block" }}
+            >
+              {item.url ?? `https://someadress.com/files/${item.name}`}
+            </Anchor>
+          );
+        })}
     </Box>
   );
 };

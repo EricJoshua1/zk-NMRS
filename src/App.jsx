@@ -26,6 +26,7 @@ import ManagerList from "./routes/ManagerList";
 import { UserProvider } from "./context/UserContext";
 import SupervisorList from "./routes/SupervisorList";
 import { ContractProvider } from "./context/ContractContext";
+import { ThirdwebProvider } from "@thirdweb-dev/react";
 
 const theme = createTheme({
   primaryColor: "blue",
@@ -52,17 +53,19 @@ const router = createBrowserRouter(
 
 export default function App() {
   return (
-    <ContractProvider>
-      <UserProvider>
-        <MantineProvider
-          theme={theme}
-          defaultColorScheme="dark"
-          forceColorScheme="dark"
-        >
-          <Notifications />
-          <RouterProvider router={router} />
-        </MantineProvider>
-      </UserProvider>
-    </ContractProvider>
+    <ThirdwebProvider clientId={"35652609a2a228a0cd933c8727a3bab9"}>
+      <ContractProvider>
+        <UserProvider>
+          <MantineProvider
+            theme={theme}
+            defaultColorScheme="dark"
+            forceColorScheme="dark"
+          >
+            <Notifications />
+            <RouterProvider router={router} />
+          </MantineProvider>
+        </UserProvider>
+      </ContractProvider>
+    </ThirdwebProvider>
   );
 }

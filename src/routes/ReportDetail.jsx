@@ -1,5 +1,4 @@
 import React, { useContext, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
 import {
   Group,
   Box,
@@ -9,11 +8,11 @@ import {
   TextInput,
   Text,
 } from "@mantine/core";
-import reports from "../data/reports";
+// import reports from "../data/reports";
 import { IconArrowLeft } from "@tabler/icons-react";
 import StatusBadge from "../components/StatusBadge";
 import { useForm } from "@mantine/form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import ReportForm from "../components/ReportForm";
 import { DateTimePicker } from "@mantine/dates";
 import { UserContext } from "../context/UserContext";
@@ -21,24 +20,47 @@ import { UserContext } from "../context/UserContext";
 const ReportDetail = () => {
   const { user } = useContext(UserContext);
 
-  const { id } = useParams();
+  // const { id } = useParams();
   const navigate = useNavigate();
+  const { state: report } = useLocation();
 
-  const data = reports.find((item) => item.reportNumber.toString() === id);
+  console.log("REPORT: ", report);
+
+  const decodeStatus = (status) => {
+    const intStatus = Number.parseInt(status);
+    if (intStatus == 1) return "accepted";
+    if (intStatus == 2) return "pending";
+    return "rejected";
+  };
+
+  // const data = reports.find((item) => item.reportNumber.toString() === id);
+  const data = {
+    status: decodeStatus(report?.status) ?? "",
+    category: report?.category ?? "",
+    dateOfEvent: new Date(Number.parseInt(report?.dateOfEvent)) ?? "",
+    locationOfEvent: report?.locationOfEvent ?? "",
+    severity: report?.severity ?? "",
+    title: report?.title ?? "",
+    description: report?.description ?? "",
+    involvedObject: report?.involvedObject ?? "",
+    files: report?.files ?? [],
+    id: Number.parseInt(report?.id) ?? "",
+    reporter: report?.reporter ?? "",
+  };
 
   const form = useForm({
     initialValues: {
-      createdAt: data?.createdAt ?? "",
-      user: data?.user ?? "",
-      status: data?.status ?? "",
-      category: data?.category ?? "",
-      dateOfEvent: data?.dateOfEvent ?? "",
-      locationOfEvent: data?.locationOfEvent ?? "",
-      severity: data?.severity ?? "",
-      title: data?.title ?? "",
-      description: data?.description ?? "",
-      injuredObject: data?.injuredObject ?? "",
-      files: data?.files ?? [],
+      // dateOfEvent: report?.dateOfEvent ?? "",
+      reporter: data.reporter,
+      status: data.status,
+      category: data.category,
+      dateOfEvent: data.dateOfEvent,
+      locationOfEvent: data.locationOfEvent,
+      severity: data.severity,
+      title: data.title,
+      description: data.description,
+      involvedObject: data.involvedObject,
+      files: data.files,
     },
 
     validate: {},
@@ -56,15 +78,16 @@ const ReportDetail = () => {
           </ActionIcon>
 
           <Title order={3}>
-            (#{data.reportNumber}) {data.title}
+            (#{Number.parseInt(report.id)}) {report.title}
           </Title>
         </Group>
-        {user?.role === "manager" && data.status === "pending" && (
-          <Group gap={"xs"}>
-            <Button color="red">Reject</Button>
-            <Button color="green">Accept</Button>
-          </Group>
-        )}
+        {user?.role === "manager" &&
+          decodeStatus(report.status) === "pending" && (
+            <Group gap={"xs"}>
+              <Button color="red">Reject</Button>
+              <Button color="green">Accept</Button>
+            </Group>
+          )}
       </Group>
       <ReportForm form={form} data={data} edit={false}>
         <Group>
@@ -74,21 +97,21 @@ const ReportDetail = () => {
               variant="unstyled"
               style={{ flex: 1 }}
               label="Created at"
-              {...form.getInputProps("createdAt")}
+              {...form.getInputProps("dateOfEvent")}
             />
             <TextInput
               readOnly
               variant="unstyled"
               style={{ flex: 1 }}
               label="Reported from"
-              {...form.getInputProps("user")}
+              {...form.getInputProps("reporter")}
             />
           </Group>
           <Box pb={5}>
             <Text size="sm" mb={5}>
               Status
             </Text>
-            <StatusBadge status={data.status} />
+            <StatusBadge status={decodeStatus(report.status)} />
           </Box>
         </Group>
       </ReportForm>

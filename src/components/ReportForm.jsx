@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Group,
   Text,
@@ -26,7 +26,7 @@ const ReportForm = ({ form, data, edit, children }) => {
   const { contract } = useContext(ContractContext);
   const { user } = useContext(UserContext);
   const storage = useStorage();
-  const { mutateAsync: upload, isLoading } = useStorageUpload();
+  const { mutateAsync: upload, isLoading: isUploading } = useStorageUpload();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -52,14 +52,29 @@ const ReportForm = ({ form, data, edit, children }) => {
     // );
     // console.log("IPFS: ", result);
 
-    let fileList = [];
+    let filesList = [];
+
+    // show progress notification.
+    const notificationId = notifications.show({
+      loading: true,
+      autoClose: false,
+      color: "yellow",
+      title: "Uploading files",
+      message: "Your files are bring uploaded to the IPFS.",
+    });
 
     // upload files to IPFS
     if (files.length > 0) {
-      // const uris = await upload({ data: files });
-      // console.log(uris);
-      fileList = files.map((item) => fileList.push(item.name));
+      filesList = await upload({ data: files });
+      console.log(filesList);
     }
+
+    // update progress notification
+    notifications.update({
+      id: notificationId,
+      title: "Submitting report",
+      message: "Your report is being sent to the blockchain",
+    });
 
     const payload = {
       category,
@@ -70,39 +85,57 @@ const ReportForm = ({ form, data, edit, children }) => {
       title,
       severity,
       involvedObject,
-      fileList,
+      filesList,
     };
     // console.log(payload);
 
-    // send data to smart contract
-    const result = await contract.methods
-      .submitIncidentReport(...Object.values(payload))
-      .send({ from: user.id });
-    console.log(result);
+    try {
+      // send data to smart contract
+      const result = await contract.methods
+        .submitIncidentReport(...Object.values(payload))
+        .send({ from: user.id });
 
-    if (result.events) {
-      // event.returnValues[0] --> reportId
-      // event.returnValues[1] --> address
+      // hide progress notification
+      notifications.hide(notificationId);
 
-      const { IncidentReportSubmitted: event } = result.events;
+      if (result.events) {
+        // event.returnValues[0] --> reportId
+        // event.returnValues[1] --> address
 
-      // show notification
-      notifications.show({
-        color: "green",
-        title: "Success",
-        message: "Near-miss report has been successful submitted!",
-      });
-      // navigate back to reporter list
-      navigate(-1);
-    } else {
-      // show failed notification
+        const { IncidentReportSubmitted: event } = result.events;
+
+        // show notification
+        notifications.show({
+          color: "green",
+          title: "Success",
+          message: "Near-miss report has been successful submitted!",
+          autoClose: 10000,
+        });
+        // navigate back to reporter list
+        navigate(-1);
+      } else {
+        // show failed notification
+        notifications.show({
+          color: "red",
+          title: "Failed",
+          message: "Something went wrong, make sure you have enough gas!",
+          autoClose: 10000,
+        });
+
+        // set Loading false
+        setLoading(false);
+      }
+    } catch (error) {
+      // hide progress notification
+      notifications.hide(notificationId);
+
+      setLoading(false);
       notifications.show({
         color: "red",
         title: "Failed",
         message: "Something went wrong, make sure you have enough gas!",
+        autoClose: 10000,
       });
-      // set Loading false
-      setLoading(false);
     }
   };
 

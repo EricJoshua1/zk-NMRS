@@ -111,7 +111,7 @@ export default function VerifyUser({}) {
       const role = userAddedEvent.returnValues[1];
 
       setUser({ id: address, role });
-      navigate(`/${routeList.main}/${getNavigateTo(user?.role)}`, {
+      navigate(`/${routeList.main}/${getNavigateTo(role)}`, {
         replace: true,
       });
     } else {

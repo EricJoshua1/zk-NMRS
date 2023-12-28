@@ -14,7 +14,7 @@ import { routeList } from "./routeList";
 
 // var Contract = require('web3-eth-contract');
 
-const contractAddress = "0x8654d86f170f74ef7746bf37b2e97e9d4b0fdcb8";
+const contractAddress = "0x6649f561187d81c4af4be14a4247e5d824aba86b";
 const contractABI = [
   {
     inputs: [
@@ -115,8 +115,43 @@ const contractABI = [
     inputs: [
       {
         internalType: "string",
+        name: "category",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "dateOfEvent",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "locationOfEvent",
+        type: "string",
+      },
+      {
+        internalType: "string",
         name: "description",
         type: "string",
+      },
+      {
+        internalType: "string",
+        name: "title",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "severity",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "involvedObjects",
+        type: "string",
+      },
+      {
+        internalType: "string[]",
+        name: "files",
+        type: "string[]",
       },
     ],
     name: "submitIncidentReport",
@@ -205,6 +240,76 @@ const contractABI = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getReportsBySender",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "reporter",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "category",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "dateOfEvent",
+            type: "uint256",
+          },
+          {
+            internalType: "string",
+            name: "locationOfEvent",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "description",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "title",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "severity",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "involvedObject",
+            type: "string",
+          },
+          {
+            internalType: "string[]",
+            name: "files",
+            type: "string[]",
+          },
+          {
+            internalType: "enum UserRegistration.ReportStatus",
+            name: "status",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct UserRegistration.IncidentReport[]",
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -226,7 +331,37 @@ const contractABI = [
       },
       {
         internalType: "string",
+        name: "category",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "dateOfEvent",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "locationOfEvent",
+        type: "string",
+      },
+      {
+        internalType: "string",
         name: "description",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "title",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "severity",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "involvedObject",
         type: "string",
       },
       {
@@ -355,6 +490,9 @@ export default function Login() {
     console.log("DATA FROM CONTRACT: ", result[0], result[1]);
 
     const isVerified = result[0];
+
+    console.log("ACCOUNT: ", account);
+    setUser({ id: account });
 
     if (isVerified == true) {
       const role = result[1];

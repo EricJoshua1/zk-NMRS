@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Group, Box, Table, Title, Button } from "@mantine/core";
 import moment from "moment";
 import reports from "../data/reports";
@@ -6,15 +6,34 @@ import StatusBadge from "../components/StatusBadge";
 import { useNavigate } from "react-router-dom";
 import { routeList } from "./routeList";
 import { UserContext } from "../context/UserContext";
+import { ContractContext } from "../context/ContractContext";
 
 function ReporterList() {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
-  const data = reports.filter((item) => item.user === user?.id);
+  const { contract } = useContext(ContractContext);
+  // const data = reports.filter((item) => item.user === user?.id);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     console.log("Use effect from reporter list.");
+    fetchReports();
   }, []);
+
+  const decodeStatus = (status) => {
+    const intStatus = Number.parseInt(status);
+    if (intStatus == 1) return "accepted";
+    if (intStatus == 2) return "pending";
+    return "rejected";
+  };
+
+  const fetchReports = async () => {
+    const reports = await contract.methods
+      .getReportsBySender()
+      .call({ from: user.id });
+
+    setData(reports);
+  };
 
   return (
     <Box>
@@ -45,18 +64,21 @@ function ReporterList() {
               )}
               {data.map((element) => (
                 <Table.Tr
-                  key={element.reportNumber}
+                  key={element.id}
                   onClick={() =>
                     navigate(
-                      `/${routeList.main}/report/${element.reportNumber}`
+                      `/${routeList.main}/report/${Number.parseInt(
+                        element.id
+                      )}`,
+                      { state: element }
                     )
                   }
                 >
-                  <Table.Td>{element.reportNumber}</Table.Td>
+                  <Table.Td>{Number.parseInt(element.id)}</Table.Td>
                   <Table.Td>{element.title}</Table.Td>
                   <Table.Td>{moment(element.createdAt).format("LL")}</Table.Td>
                   <Table.Td>
-                    <StatusBadge status={element.status} />
+                    <StatusBadge status={decodeStatus(element.status)} />
                   </Table.Td>
                 </Table.Tr>
               ))}

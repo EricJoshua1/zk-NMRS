@@ -22,9 +22,9 @@ function ReporterList() {
 
   const decodeStatus = (status) => {
     const intStatus = Number.parseInt(status);
-    if (intStatus == 1) return "accepted";
+    if (intStatus == 1) return "rejected";
     if (intStatus == 2) return "pending";
-    return "rejected";
+    return "accepted";
   };
 
   const fetchReports = async () => {

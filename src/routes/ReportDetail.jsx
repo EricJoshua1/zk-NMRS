@@ -16,8 +16,12 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 import ReportForm from "../components/ReportForm";
 import { DateTimePicker } from "@mantine/dates";
 import { UserContext } from "../context/UserContext";
+import { ContractContext } from "../context/ContractContext";
+import { notifications } from "@mantine/notifications";
 
 const ReportDetail = () => {
+  const [loading, setLoading] = useState(false);
+  const { contract } = useContext(ContractContext);
   const { user } = useContext(UserContext);
 
   // const { id } = useParams();
@@ -26,7 +30,7 @@ const ReportDetail = () => {
 
   const decodeStatus = (status) => {
     const intStatus = Number.parseInt(status);
-    if (intStatus == 1) return "accepted";
+    if (intStatus == 0) return "accepted";
     if (intStatus == 2) return "pending";
     return "rejected";
   };
@@ -64,6 +68,71 @@ const ReportDetail = () => {
     validate: {},
   });
 
+  const handleResolution = async (action) => {
+    setLoading(true);
+    const notificationId = notifications.show({
+      color: "yellow",
+      autoClose: false,
+      loading: true,
+      title: "Changing status...",
+      message: "Please wait while report status is being updated!",
+    });
+
+    const status = action === "accept" ? 0 : 1;
+    try {
+      const result = await contract.methods
+        .changeReportStatus(data.id, status)
+        .send({ from: user.id });
+      console.log(result);
+
+      // stop loading
+      setLoading(false);
+      // hide notification
+      notifications.hide(notificationId);
+
+      if (result.events) {
+        const { IncidentReportStatusChanged: statusChangedEvent } =
+          result.events;
+
+        const newStatus = statusChangedEvent.returnValues["newStatus"];
+        const reportId = statusChangedEvent.returnValues["reportId"];
+
+        console.log(newStatus, status);
+
+        if (Number.parseInt(newStatus) == status) {
+          // show notification
+          notifications.show({
+            title: "Success!",
+            color: "green",
+            message: "Report has been successful changed! ",
+            autoClose: 10000,
+          });
+
+          // navigate back
+          navigate(-1);
+        }
+      } else {
+        notifications.show({
+          color: "red",
+          title: "Changing status Failed!",
+          message: "Something went wrong, Try again!",
+          autoClose: 10000,
+        });
+      }
+    } catch (error) {
+      notifications.show({
+        color: "red",
+        title: "Transaction failed!",
+        message: "Check if you have enough gas fees and try again.1",
+        autoClose: 10000,
+      });
+      console.log(error);
+    }
+  };
+
+  const handleReject = () => handleResolution("reject");
+  const handleAccept = () => handleResolution("accept");
+
   return (
     <Box>
       <Group p="md" justify="space-between">
@@ -82,8 +151,12 @@ const ReportDetail = () => {
         {user?.role === "supervisor" &&
           decodeStatus(report.status) === "pending" && (
             <Group gap={"xs"}>
-              <Button color="red">Reject</Button>
-              <Button color="green">Accept</Button>
+              <Button disabled={loading} color="red" onClick={handleReject}>
+                Reject
+              </Button>
+              <Button disabled={loading} color="green" onClick={handleAccept}>
+                Accept
+              </Button>
             </Group>
           )}
       </Group>

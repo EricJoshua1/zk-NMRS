@@ -23,7 +23,7 @@ function SupervisorList() {
 
   const decodeStatus = (status) => {
     const intStatus = Number.parseInt(status);
-    if (intStatus == 1) return "accepted";
+    if (intStatus == 0) return "accepted";
     if (intStatus == 2) return "pending";
     return "rejected";
   };

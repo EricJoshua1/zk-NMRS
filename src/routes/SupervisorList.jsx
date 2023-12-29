@@ -30,7 +30,7 @@ function SupervisorList() {
 
   const fetchReports = async () => {
     const reports = await contract.methods.getReports().call({ from: user.id });
-    // console.log(Number.parseInt(reports[0].dateOfEvent));
+    console.log(reports);
     setData(reports);
   };
 
@@ -62,7 +62,10 @@ function SupervisorList() {
                   key={Number.parseInt(element.id)}
                   onClick={() =>
                     navigate(
-                      `/${routeList.main}/report/${Number.parseInt(element.id)}`
+                      `/${routeList.main}/report/${Number.parseInt(
+                        element.id
+                      )}`,
+                      { state: element }
                     )
                   }
                 >

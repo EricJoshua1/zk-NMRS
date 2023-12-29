@@ -24,8 +24,6 @@ const ReportDetail = () => {
   const navigate = useNavigate();
   const { state: report } = useLocation();
 
-  console.log("REPORT: ", report);
-
   const decodeStatus = (status) => {
     const intStatus = Number.parseInt(status);
     if (intStatus == 1) return "accepted";
@@ -81,7 +79,7 @@ const ReportDetail = () => {
             (#{Number.parseInt(report.id)}) {report.title}
           </Title>
         </Group>
-        {user?.role === "manager" &&
+        {user?.role === "supervisor" &&
           decodeStatus(report.status) === "pending" && (
             <Group gap={"xs"}>
               <Button color="red">Reject</Button>

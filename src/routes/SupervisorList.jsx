@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Group, Box, Table, Title, Button } from "@mantine/core";
 import moment from "moment";
 import reports from "../data/reports";
@@ -6,10 +6,33 @@ import StatusBadge from "../components/StatusBadge";
 import { useNavigate } from "react-router-dom";
 import { routeList } from "./routeList";
 import PendingTime from "../components/PendingTime";
+import { ContractContext } from "../context/ContractContext";
+import { UserContext } from "../context/UserContext";
 
 function SupervisorList() {
+  const { contract } = useContext(ContractContext);
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
-  const data = reports;
+  // const data = reports;
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    console.log("Use effect from supervisor list.");
+    fetchReports();
+  }, []);
+
+  const decodeStatus = (status) => {
+    const intStatus = Number.parseInt(status);
+    if (intStatus == 1) return "accepted";
+    if (intStatus == 2) return "pending";
+    return "rejected";
+  };
+
+  const fetchReports = async () => {
+    const reports = await contract.methods.getReports().call({ from: user.id });
+    // console.log(Number.parseInt(reports[0].dateOfEvent));
+    setData(reports);
+  };
 
   return (
     <Box>
@@ -36,25 +59,32 @@ function SupervisorList() {
               )}
               {data.map((element) => (
                 <Table.Tr
-                  key={element.reportNumber}
+                  key={Number.parseInt(element.id)}
                   onClick={() =>
                     navigate(
-                      `/${routeList.main}/report/${element.reportNumber}`
+                      `/${routeList.main}/report/${Number.parseInt(element.id)}`
                     )
                   }
                 >
-                  <Table.Td>{element.reportNumber}</Table.Td>
+                  <Table.Td>{Number.parseInt(element.id)}</Table.Td>
                   <Table.Td>{element.title}</Table.Td>
-                  <Table.Td>{moment(element.createdAt).format("LL")}</Table.Td>
                   <Table.Td>
-                    {element.status === "pending" ? (
-                      <PendingTime time={element.createdAt} />
+                    {moment(Number.parseInt(element.dateOfEvent) * 1000).format(
+                      "LL"
+                    )}
+                    {/* {Number.parseInt(element.dateOfEvent)} */}
+                  </Table.Td>
+                  <Table.Td>
+                    {decodeStatus(element.status) === "pending" ? (
+                      <PendingTime
+                        time={Number.parseInt(element.dateOfEvent) * 1000}
+                      />
                     ) : (
                       ""
                     )}
                   </Table.Td>
                   <Table.Td>
-                    <StatusBadge status={element.status} />
+                    <StatusBadge status={decodeStatus(element.status)} />
                   </Table.Td>
                 </Table.Tr>
               ))}

@@ -14,7 +14,7 @@ import { routeList } from "./routeList";
 
 // var Contract = require('web3-eth-contract');
 
-const contractAddress = "0x6649f561187d81c4af4be14a4247e5d824aba86b";
+const contractAddress = "0xad0b644361df724da64276973a907823f1c946fa";
 const contractABI = [
   {
     inputs: [
@@ -112,6 +112,49 @@ const contractABI = [
     type: "function",
   },
   {
+    inputs: [],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "reportId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "enum UserRegistration.ReportStatus",
+        name: "newStatus",
+        type: "uint8",
+      },
+    ],
+    name: "IncidentReportStatusChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "reportId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "reporter",
+        type: "address",
+      },
+    ],
+    name: "IncidentReportSubmitted",
+    type: "event",
+  },
+  {
     inputs: [
       {
         internalType: "string",
@@ -160,49 +203,6 @@ const contractABI = [
     type: "function",
   },
   {
-    inputs: [],
-    stateMutability: "nonpayable",
-    type: "constructor",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "reportId",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "enum UserRegistration.ReportStatus",
-        name: "newStatus",
-        type: "uint8",
-      },
-    ],
-    name: "IncidentReportStatusChanged",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "reportId",
-        type: "uint256",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "reporter",
-        type: "address",
-      },
-    ],
-    name: "IncidentReportSubmitted",
-    type: "event",
-  },
-  {
     anonymous: false,
     inputs: [
       {
@@ -234,6 +234,146 @@ const contractABI = [
         internalType: "string",
         name: "",
         type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getAcceptedReports",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "reporter",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "category",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "dateOfEvent",
+            type: "uint256",
+          },
+          {
+            internalType: "string",
+            name: "locationOfEvent",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "description",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "title",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "severity",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "involvedObject",
+            type: "string",
+          },
+          {
+            internalType: "string[]",
+            name: "files",
+            type: "string[]",
+          },
+          {
+            internalType: "enum UserRegistration.ReportStatus",
+            name: "status",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct UserRegistration.IncidentReport[]",
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getReports",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "reporter",
+            type: "address",
+          },
+          {
+            internalType: "string",
+            name: "category",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "dateOfEvent",
+            type: "uint256",
+          },
+          {
+            internalType: "string",
+            name: "locationOfEvent",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "description",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "title",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "severity",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "involvedObject",
+            type: "string",
+          },
+          {
+            internalType: "string[]",
+            name: "files",
+            type: "string[]",
+          },
+          {
+            internalType: "enum UserRegistration.ReportStatus",
+            name: "status",
+            type: "uint8",
+          },
+        ],
+        internalType: "struct UserRegistration.IncidentReport[]",
+        name: "",
+        type: "tuple[]",
       },
     ],
     stateMutability: "view",

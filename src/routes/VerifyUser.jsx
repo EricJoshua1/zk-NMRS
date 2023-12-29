@@ -100,7 +100,20 @@ export default function VerifyUser({}) {
     else if (role == "Manager") rl = 1;
     else rl = 2;
 
-    const data = await contract.methods.addUser(pf, rl).send({ from: user.id });
+    let data;
+
+    try {
+      data = await contract.methods.addUser(pf, rl).send({ from: user.id });
+    } catch (err) {
+      setVerificationFailed(true);
+      setLoading(false);
+      notifications.show({
+        color: "red",
+        title: "Verification failed",
+        message: "Please try again",
+      });
+      console.log(err);
+    }
 
     if (data.events) {
       const { UserAdded: userAddedEvent } = data.events;

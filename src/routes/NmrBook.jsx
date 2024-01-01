@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Group, Box, Table, Title, Button } from "@mantine/core";
 import moment from "moment";
 import reports from "../data/reports";
@@ -6,10 +6,32 @@ import StatusBadge from "../components/StatusBadge";
 import { useNavigate } from "react-router-dom";
 import { routeList } from "./routeList";
 import { category } from "../data/options";
+import { ContractContext } from "../context/ContractContext";
+import { UserContext } from "../context/UserContext";
 
 function NmrBook() {
+  const { contract } = useContext(ContractContext);
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
-  const data = reports.filter((item) => item.status === "accepted");
+  const [data, setData] = useState([]);
+  // const data = reports.filter((item) => item.status === "accepted");
+
+  const fetchReports = async () => {
+    try {
+      const reports = await contract.methods
+        .getAcceptedReports()
+        .call({ from: user.id });
+      console.log(reports);
+      setData(reports);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchReports();
+  }, []);
+
   return (
     <Box>
       <Group p="md" justify="space-between">
@@ -34,21 +56,26 @@ function NmrBook() {
               )}
               {data.map((element) => (
                 <Table.Tr
-                  key={element.reportNumber}
+                  key={Number.parseInt(element.id)}
                   onClick={() =>
                     navigate(
-                      `/${routeList.main}/report/${element.reportNumber}`
+                      `/${routeList.main}/report/${Number.parseInt(
+                        element.id
+                      )}`,
+                      { state: element }
                     )
                   }
                 >
-                  <Table.Td>{element.reportNumber}</Table.Td>
+                  <Table.Td>{Number.parseInt(element.id)}</Table.Td>
                   <Table.Td>
                     {category.find((item) => item.value === element.category)
                       ?.label ?? ""}
                   </Table.Td>
                   <Table.Td>{element.title}</Table.Td>
                   <Table.Td>
-                    {moment(element.dateOfEvent).format("LL")}
+                    {moment(Number.parseInt(element.dateOfEvent) * 1000).format(
+                      "LL"
+                    )}
                   </Table.Td>
                 </Table.Tr>
               ))}

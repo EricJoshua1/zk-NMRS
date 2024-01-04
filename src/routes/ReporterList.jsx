@@ -76,7 +76,11 @@ function ReporterList() {
                 >
                   <Table.Td>{Number.parseInt(element.id)}</Table.Td>
                   <Table.Td>{element.title}</Table.Td>
-                  <Table.Td>{moment(element.createdAt).format("LL")}</Table.Td>
+                  <Table.Td>
+                    {moment(Number.parseInt(element.dateOfEvent) * 1000).format(
+                      "LL"
+                    )}
+                  </Table.Td>
                   <Table.Td>
                     <StatusBadge status={decodeStatus(element.status)} />
                   </Table.Td>

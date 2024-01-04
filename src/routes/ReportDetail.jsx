@@ -39,7 +39,7 @@ const ReportDetail = () => {
   const data = {
     status: decodeStatus(report?.status) ?? "",
     category: report?.category ?? "",
-    dateOfEvent: new Date(Number.parseInt(report?.dateOfEvent)) ?? "",
+    dateOfEvent: new Date(Number.parseInt(report?.dateOfEvent) * 1000) ?? "",
     locationOfEvent: report?.locationOfEvent ?? "",
     severity: report?.severity ?? "",
     title: report?.title ?? "",

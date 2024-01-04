@@ -189,7 +189,7 @@ export default function VerifyUser({}) {
         </Text>
         <Text c="white" w={400} mt="md">
           Please connect your MetaMask wallet to continue reporting anonymously
-          with iSafe Reporting platform your boss will not know.
+          with iSafe Near-miss Reporting platform your boss will not know.
         </Text>
       </Box>
       <Box>

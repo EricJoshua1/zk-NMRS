@@ -100,7 +100,7 @@ export default function Main() {
       <Group gap={"xs"} style={{ position: "absolute" }} py={"md"} px={"xl"}>
         <Avatar src={logo} size={28} radius={0} />
         <Text c="white" fw={500} fz={25}>
-          iSafe RS
+          iNMRS
         </Text>
       </Group>
       <Center h={"100vh"}>

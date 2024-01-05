@@ -7,12 +7,12 @@ import "./App.css";
 
 import { MantineProvider, createTheme } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
-import { useState } from "react";
 import {
   Route,
   RouterProvider,
   createBrowserRouter,
   createRoutesFromElements,
+  Navigate,
 } from "react-router-dom";
 import Root from "./routes/Root";
 import Login from "./routes/Login";
@@ -38,6 +38,7 @@ const theme = createTheme({
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path={routeList.root} element={<Root />}>
+      <Route path="/" element={<Navigate to={routeList.login} replace />} />
       <Route path={routeList.login} element={<Login />} />
       <Route path={routeList.main} element={<Main />}>
         <Route path={routeList.reporterList} element={<ReporterList />} />

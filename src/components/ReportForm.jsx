@@ -65,8 +65,12 @@ const ReportForm = ({ form, data, edit, children }) => {
 
     // upload files to IPFS
     if (files.length > 0) {
-      filesList = await upload({ data: files });
-      console.log(filesList);
+      try {
+        filesList = await upload({ data: files });
+        console.log(filesList);
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     // update progress notification

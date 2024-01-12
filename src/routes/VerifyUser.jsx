@@ -203,8 +203,14 @@ export default function VerifyUser({}) {
             },
           }}
         >
-          <Stepper.Step label="Step 1" description={"Download something"} />
-          <Stepper.Step label="Step 2" description={"Witness whatever"} />
+          <Stepper.Step
+            label="Step 1"
+            description={"Download ZIR files with instruction"}
+          />
+          <Stepper.Step
+            label="Step 2"
+            description={"Follow instructions to generate proof"}
+          />
           <Stepper.Step
             label="Step 3"
             description={

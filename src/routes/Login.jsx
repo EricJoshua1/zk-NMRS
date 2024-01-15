@@ -1,4 +1,13 @@
-import { Avatar, Box, Center, Group, Overlay, Text } from "@mantine/core";
+/*global chrome*/
+import {
+  Avatar,
+  Box,
+  Center,
+  Group,
+  Overlay,
+  Text,
+  Button,
+} from "@mantine/core";
 import { useSDK } from "@metamask/sdk-react";
 import { useState, useEffect, useRef, useContext } from "react";
 import NET from "vanta/src/vanta.net";
@@ -99,6 +108,45 @@ export default function Login() {
     // embla?.scrollNext();
   };
 
+  const openPopup = () => {
+    const extensionId = "plbmoalkockmingpgmbflopgjcigdhoe";
+    const message = { action: "openExtension", data: "hello mom" };
+
+    chrome.runtime.sendMessage(extensionId, message, (response) => {
+      console.log("Response:", response);
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener(
+      "message",
+      function (event) {
+        if (event.data.action === "processedData") {
+          console.log("Processed data from extension:", event.data.data);
+          // Handle the processed data here
+        }
+
+        // Only accept messages from the same frame
+        if (
+          event.source == window &&
+          event.data.type &&
+          event.data.type == "FROM_EXTENSION"
+        ) {
+          console.log("Page received:", event.data);
+        }
+      },
+      false
+    );
+
+    // window.addEventListener("message", (event) => {
+    //   // Always check the origin and source for security!
+    //   if (event.data.action === "processedData") {
+    //     console.log("Processed data from extension:", event.data.data);
+    //     // Handle the processed data here
+    //   }
+    // });
+  }, []);
+
   return (
     <div
       ref={myRef}
@@ -128,6 +176,9 @@ export default function Login() {
               initialSlide={0}
             >
               <Carousel.Slide p={50}>
+                <Button id="something" onClick={openPopup}>
+                  ZKP
+                </Button>
                 <ConnectWallet onConnect={onConnect} />
               </Carousel.Slide>
 

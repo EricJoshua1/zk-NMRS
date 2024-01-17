@@ -69,23 +69,22 @@ export default function Login() {
   }, [contract]);
 
   const handleCheckUser = async () => {
-    console.log(contract);
+    embla?.scrollNext();
+    // const result = await contract.methods.checkUser().call({ from: account });
+    // console.log("DATA FROM CONTRACT: ", result[0], result[1]);
 
-    const result = await contract.methods.checkUser().call({ from: account });
-    console.log("DATA FROM CONTRACT: ", result[0], result[1]);
+    // const isVerified = result[0];
 
-    const isVerified = result[0];
+    // console.log("ACCOUNT: ", account);
+    // setUser({ id: account });
 
-    console.log("ACCOUNT: ", account);
-    setUser({ id: account });
-
-    if (isVerified == true) {
-      const role = result[1];
-      setUser({ id: account, role });
-      navigate(`/${routeList.main}/${getNavigateTo(role)}`, {
-        replace: true,
-      });
-    } else embla?.scrollNext();
+    // if (isVerified == true) {
+    //   const role = result[1];
+    //   setUser({ id: account, role });
+    //   navigate(`/${routeList.main}/${getNavigateTo(role)}`, {
+    //     replace: true,
+    //   });
+    // } else embla?.scrollNext();
   };
 
   const onConnect = async () => {
@@ -176,9 +175,9 @@ export default function Login() {
               initialSlide={0}
             >
               <Carousel.Slide p={50}>
-                <Button id="something" onClick={openPopup}>
+                {/* <Button id="something" onClick={openPopup}>
                   ZKP
-                </Button>
+                </Button> */}
                 <ConnectWallet onConnect={onConnect} />
               </Carousel.Slide>
 

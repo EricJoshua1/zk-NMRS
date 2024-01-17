@@ -1,3 +1,4 @@
+/*global chrome*/
 import {
   Box,
   Button,
@@ -14,6 +15,9 @@ import { routeList } from "./routeList";
 import { UserContext } from "../context/UserContext";
 import { ThirdwebStorage } from "@thirdweb-dev/storage";
 import { ContractContext } from "../context/ContractContext";
+
+const EXTENSION_ID = "plbmoalkockmingpgmbflopgjcigdhoe";
+const OPEN_EXTENSION = "openExtension";
 
 const storage = new ThirdwebStorage({
   clientId: "35652609a2a228a0cd933c8727a3bab9",
@@ -38,21 +42,97 @@ export default function VerifyUser({}) {
 
   const { contract } = useContext(ContractContext);
 
-  const handleDownload = async () => {
-    let uri;
-    if (role == "Reporter") uri = reporterIPFSHash;
-    else if (role == "Manager") uri = managerIPFSHash;
-    else uri = supervisorIPFSHash;
+  const getArtifactsURL = () => {
+    let url;
+    switch (role) {
+      case "Reporter":
+        url =
+          "https://bafybeicvhp3tecl7udzda4vavhpw7eqrijszhy5q3j3mlyamzct6jdrkx4.ipfs.cf-ipfs.com/";
+        break;
 
-    const result = await storage.download(uri);
+      case "Manager":
+        url =
+          "https://bafybeigk6gw5rkvbaomyzz5xmk6uyppa2z5t56a4cikqpmbwbifs5qfpte.ipfs.cf-ipfs.com/";
+        break;
 
-    if (result.status == 200) {
-      console.log(result.url);
-      window.open(result.url, "_blank");
-      setActive(1);
-    } else {
-      console.log(result);
+      case "Supervisor":
+        url =
+          "https://bafybeihcr4ejtzh3sbutab5mxwurptkxfjg47xxavpaxvo5rgmt2c524cu.ipfs.cf-ipfs.com/";
+        break;
+
+      default:
+        break;
     }
+
+    return url;
+  };
+
+  const openPopup = (artifacts) => {
+    const notificationId = notifications.show({
+      color: "yellow",
+      title: "Waiting for zkProof..",
+      message: "Please input your work ID in the zkProof generator extension",
+      autoClose: false,
+      loading: true,
+    });
+
+    chrome.runtime.sendMessage(
+      EXTENSION_ID,
+      { action: OPEN_EXTENSION, data: artifacts },
+      (response) => {
+        if (response.ok) {
+          notifications.hide(notificationId);
+          setProof(response.result);
+        } else {
+          notifications.hide(notificationId);
+          notifications.show({
+            color: "red",
+            title: "Verification Failed!",
+            message: "Failed to generate zkProof, check your ID.",
+          });
+          setVerificationFailed(true);
+        }
+      }
+    );
+  };
+
+  const handleDownload = async () => {
+    const response = await fetch(getArtifactsURL());
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let result = "";
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        break;
+      }
+      result += decoder.decode(value, { stream: true });
+    }
+
+    // console.log(result);
+
+    // open popup now
+    openPopup(result);
+
+    // let uri;
+    // if (role == "Reporter") uri = reporterIPFSHash;
+    // else if (role == "Manager") uri = managerIPFSHash;
+    // else uri = supervisorIPFSHash;
+
+    // const result = await storage.download(uri);
+
+    // if (result.status == 200) {
+    //   console.log(result.url);
+    //   window.open(result.url, "_blank");
+    //   setActive(1);
+    // } else {
+    //   console.log(result);
+    // }
   };
 
   const getNavigateTo = (role) => {

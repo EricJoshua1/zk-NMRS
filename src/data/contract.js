@@ -1,4 +1,4 @@
-export const contractAddress = "0xad0b644361df724da64276973a907823f1c946fa";
+export const contractAddress = "0xac2C3d27e1C2B5f17377baD42b4B9d887f051AF0";
 export const contractABI = [
   {
     inputs: [
@@ -85,7 +85,7 @@ export const contractABI = [
         type: "uint256",
       },
       {
-        internalType: "enum UserRegistration.ReportStatus",
+        internalType: "enum NmrPlatform.ReportStatus",
         name: "newStatus",
         type: "uint8",
       },
@@ -111,7 +111,7 @@ export const contractABI = [
       },
       {
         indexed: false,
-        internalType: "enum UserRegistration.ReportStatus",
+        internalType: "enum NmrPlatform.ReportStatus",
         name: "newStatus",
         type: "uint8",
       },
@@ -280,12 +280,12 @@ export const contractABI = [
             type: "string[]",
           },
           {
-            internalType: "enum UserRegistration.ReportStatus",
+            internalType: "enum NmrPlatform.ReportStatus",
             name: "status",
             type: "uint8",
           },
         ],
-        internalType: "struct UserRegistration.IncidentReport[]",
+        internalType: "struct NmrPlatform.IncidentReport[]",
         name: "",
         type: "tuple[]",
       },
@@ -350,12 +350,12 @@ export const contractABI = [
             type: "string[]",
           },
           {
-            internalType: "enum UserRegistration.ReportStatus",
+            internalType: "enum NmrPlatform.ReportStatus",
             name: "status",
             type: "uint8",
           },
         ],
-        internalType: "struct UserRegistration.IncidentReport[]",
+        internalType: "struct NmrPlatform.IncidentReport[]",
         name: "",
         type: "tuple[]",
       },
@@ -420,12 +420,12 @@ export const contractABI = [
             type: "string[]",
           },
           {
-            internalType: "enum UserRegistration.ReportStatus",
+            internalType: "enum NmrPlatform.ReportStatus",
             name: "status",
             type: "uint8",
           },
         ],
-        internalType: "struct UserRegistration.IncidentReport[]",
+        internalType: "struct NmrPlatform.IncidentReport[]",
         name: "",
         type: "tuple[]",
       },
@@ -489,7 +489,7 @@ export const contractABI = [
         type: "string",
       },
       {
-        internalType: "enum UserRegistration.ReportStatus",
+        internalType: "enum NmrPlatform.ReportStatus",
         name: "status",
         type: "uint8",
       },

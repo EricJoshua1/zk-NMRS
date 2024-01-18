@@ -16,7 +16,7 @@ import { UserContext } from "../context/UserContext";
 import { ThirdwebStorage } from "@thirdweb-dev/storage";
 import { ContractContext } from "../context/ContractContext";
 
-const EXTENSION_ID = "plbmoalkockmingpgmbflopgjcigdhoe";
+const EXTENSION_ID = "aohpfocfdiihlpgjjjglckkclgeninol";
 const OPEN_EXTENSION = "openExtension";
 
 const storage = new ThirdwebStorage({
@@ -180,10 +180,31 @@ export default function VerifyUser({}) {
     else if (role == "Manager") rl = 1;
     else rl = 2;
 
+    let proof = [
+      [
+        "0x0d00ca66b99015249d168092e7c92fe0a5a3f978061ac4fcc07cc1a83e88fb62",
+        "0x020cf316361fb9e1fcc8896ffe7cde1adc2cf5ad4b8ad33a51ab1838304ecbc3",
+      ],
+      [
+        [
+          "0x0812d192ef6cef21452ba308254845805aa8c6944f40c2a79fb8a1c49e7e3876",
+          "0x236b9180a919ab46708ae7851e1915a04b0f6cd1f8cb89c26a5ccc4c9feabb75",
+        ],
+        [
+          "0x1c95df08763d6b7c1d1454284ab9a3ec0b24f7cae76287b6814cc793c38f3409",
+          "0x2a7c035430c7aed042e20d8d9c93aea8f84c11a9803c83485cf673c53732aa00",
+        ],
+      ],
+      [
+        "0x1e010c02d59be4c32c580924d07aa0df50fe00bc44368343282fc898391b26bf",
+        "0x2cdc1e5e3ff9fd51a8a124c87f6845fac31b3c28541433702c38435386ae310a",
+      ],
+    ];
+
     let data;
 
     try {
-      data = await contract.methods.addUser(pf, rl).send({ from: user.id });
+      data = await contract.methods.addUser(proof, rl).send({ from: user.id });
     } catch (err) {
       setVerificationFailed(true);
       setLoading(false);
@@ -265,11 +286,11 @@ export default function VerifyUser({}) {
           WELCOME BACK TO
         </Text>
         <Text c="white" w={400} fz={30}>
-          iSafe Reporting
+          zk-NMRS Reporting
         </Text>
         <Text c="white" w={400} mt="md">
           Please connect your MetaMask wallet to continue reporting anonymously
-          with iSafe Near-miss Reporting platform your boss will not know.
+          with zk-NMRS Near-miss Reporting platform your boss will not know.
         </Text>
       </Box>
       <Box>
@@ -315,8 +336,8 @@ export default function VerifyUser({}) {
         data={["Reporter", "Manager", "Supervisor"]}
       />
       <Stack>
-        <Button onClick={handleDownload}>Download</Button>
-        <FileButton
+        <Button onClick={handleDownload}>Open ZKP Extension</Button>
+        {/* <FileButton
           onChange={handleReadProof}
           // accept="application/JSON"
         >
@@ -325,7 +346,7 @@ export default function VerifyUser({}) {
               {loading ? "Verifying..." : "Upload Proof"}
             </Button>
           )}
-        </FileButton>
+        </FileButton> */}
       </Stack>
     </Stack>
   );

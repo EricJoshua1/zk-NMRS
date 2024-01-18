@@ -20,11 +20,11 @@ export default function ConnectWallet({ onConnect }) {
           WELCOME BACK TO
         </Text>
         <Text c="white" w={400} fz={30}>
-          iSafe Reporting
+          zk-NMRS Reporting
         </Text>
         <Text c="white" w={400} mt="md">
           Please connect your MetaMask wallet to continue reporting anonymously
-          with iSafe Reporting platform your boss will not know.
+          with zk-NMRS Reporting platform your boss will not know.
         </Text>
       </Box>
       <Center>

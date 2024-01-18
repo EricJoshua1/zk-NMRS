@@ -69,22 +69,22 @@ export default function Login() {
   }, [contract]);
 
   const handleCheckUser = async () => {
-    embla?.scrollNext();
-    // const result = await contract.methods.checkUser().call({ from: account });
-    // console.log("DATA FROM CONTRACT: ", result[0], result[1]);
+    // embla?.scrollNext();
+    const result = await contract.methods.checkUser().call({ from: account });
+    console.log("DATA FROM CONTRACT: ", result[0], result[1]);
 
-    // const isVerified = result[0];
+    const isVerified = result[0];
 
-    // console.log("ACCOUNT: ", account);
-    // setUser({ id: account });
+    console.log("ACCOUNT: ", account);
+    setUser({ id: account });
 
-    // if (isVerified == true) {
-    //   const role = result[1];
-    //   setUser({ id: account, role });
-    //   navigate(`/${routeList.main}/${getNavigateTo(role)}`, {
-    //     replace: true,
-    //   });
-    // } else embla?.scrollNext();
+    if (isVerified == true) {
+      const role = result[1];
+      setUser({ id: account, role });
+      navigate(`/${routeList.main}/${getNavigateTo(role)}`, {
+        replace: true,
+      });
+    } else embla?.scrollNext();
   };
 
   const onConnect = async () => {
@@ -108,7 +108,7 @@ export default function Login() {
   };
 
   const openPopup = () => {
-    const extensionId = "plbmoalkockmingpgmbflopgjcigdhoe";
+    const extensionId = "aohpfocfdiihlpgjjjglckkclgeninol";
     const message = { action: "openExtension", data: "hello mom" };
 
     chrome.runtime.sendMessage(extensionId, message, (response) => {
@@ -157,7 +157,7 @@ export default function Login() {
       <Group gap={"xs"} style={{ position: "absolute" }} py={"md"} px={"xl"}>
         <Avatar src={logo} size={28} radius={0} />
         <Text c="white" fw={500} fz={25}>
-          iNMRS
+          zk-NMRS
         </Text>
       </Group>
       <Center h={"100vh"}>

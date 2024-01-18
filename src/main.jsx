@@ -10,7 +10,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       debug={false}
       sdkOptions={{
         dappMetadata: {
-          name: "iSafe Near-Miss Reporting System",
+          name: "zk-NMRS Near-Miss Reporting System",
           url: window.location.href,
         },
       }}
